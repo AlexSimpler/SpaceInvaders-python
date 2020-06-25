@@ -1,9 +1,12 @@
 SpaceInvaders
 =============
-
 A "remastered" version of SpaceInvaders made in python.
 
+How-to
+======
+Run ' cd src && python src/main.py ' in cmd
+
 Credits
-=======
+-------
 Made with https://github.com/AlexLiebLFJM
 All rights reserved 2020
