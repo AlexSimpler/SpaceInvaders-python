@@ -61,9 +61,7 @@ class Entity(object):
         pass
 
     def hit(self):
-        global diff_factor
         self.health -= 1
-        diff_factor = self.health
 
     def is_hit(self, pos):
         return self.rect.collidepoint(pos)
@@ -261,6 +259,7 @@ def update():
         if len(invaders) == 0:
             init_new_level()
 
+
 def handle_keyboard():
     global dead, level, score, alien_per_level, first, home, running, diff_factor, press_count, choice
 
@@ -285,6 +284,7 @@ def handle_keyboard():
             invaders.clear()
             alien_per_level = 2
             level = 0
+            score = 0
             health = 3
             init()
             home = False
@@ -293,22 +293,24 @@ def handle_keyboard():
         if(key[pygame.K_q]):
                 running = False
         elif (key[pygame.K_m]):
-                home = True
-                dead = False
-                alien_per_level = 2
-                level = 0
+            invaders.clear()
+            alien_per_level = 2
+            home = True
+            dead = False
     if(home):
         if(key[PLUS] or key[MINUS]):
             press_count += 1
 
         if(key[PLUS]):
-            if(not press_count % 5):
+            if(not press_count % 5 or not press_count):
                 if(diff_factor > 0): # difficulty_levels["hard"]
                     diff_factor -= 1 
+                    ship.health = diff_factor+1
         elif(key[MINUS]):
-            if(not press_count % 5):
+            if(not press_count % 5 or not press_count):
                 if(diff_factor < len(difficulty_levels) - 1): # difficulty_levels["hard"]
                     diff_factor += 1
+                    ship.health = diff_factor+1
         if(press_count > 9999):
             press_count = 0
 
