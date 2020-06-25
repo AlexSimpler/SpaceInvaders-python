@@ -4,7 +4,7 @@ A "remastered" version of SpaceInvaders made in python.
 
 How-to
 ======
-Run src/main.py
+Run ' python src/main.py '
 
 Credits
 -------
