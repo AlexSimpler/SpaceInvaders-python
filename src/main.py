@@ -61,7 +61,9 @@ class Entity(object):
         pass
 
     def hit(self):
+        global diff_factor
         self.health -= 1
+        diff_factor = self.health
 
     def is_hit(self, pos):
         return self.rect.collidepoint(pos)
@@ -127,7 +129,7 @@ class Ship(Entity):
         self.shoot_timer -= 1/FPS
 
     def draw(self, fenetre):
-        for i in range(0, (diff_factor+1) * 25, 25):
+        for i in range(0, self.health * 25, 25):
             fenetre.blit(imageHeart, (i, 0))
 
         if self.health > 0: #byeeee salut  haha hahahah
@@ -156,9 +158,8 @@ class Projectile(Entity):
         global ship
         sx, sy = ship.rect.x + 33, ship.rect.y + 16
         ax, ay = rect.x + rect.size[0]/2, rect.y - rect.size[1]/2
-        diffX = int((sx - ax) * 0.01) # position difference between ship and inv
+        diffX = int((sx - ax) * 0.01) # position difference between ship and invader
         diffY = int((sy - ay) * 0.01) # reduce the trajectory velocity of the projectiles
-
         return [diffX, diffY]
 
 
