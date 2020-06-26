@@ -6,7 +6,7 @@ How-to
 ======
 Run the executable in the build folder ( CAREFUL, might not be updated to the latest version, use the way below preferably )
 OR
-Run ' cd src && python src/main.py ' in cmd
+Run ' cd src && python main.py ' in cmd
 
 Credits
 -------
