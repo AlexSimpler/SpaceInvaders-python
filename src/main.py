@@ -24,6 +24,7 @@ press_count = 0
 ship = None
 dead = False
 home = True
+paused = False
 
 projectiles = []
 
@@ -54,8 +55,9 @@ class Entity(object):
         self.health = health
 
     def update(self):
-        self.rect.x += self.speed[0]
-        self.rect.y += self.speed[1]
+        if(not paused):
+            self.rect.x += self.speed[0]
+            self.rect.y += self.speed[1]
 
     def draw(self, fenetre):
         pass
@@ -157,7 +159,7 @@ class Projectile(Entity):
         sx, sy = ship.rect.x + 33, ship.rect.y + 16
         ax, ay = rect.x + rect.size[0]/2, rect.y - rect.size[1]/2
         diffX = int((sx - ax) * 0.01) # position difference between ship and invader
-        diffY = int((sy - ay) * 0.01) # reduce the trajectory velocity of the projectiles
+        diffY = int((sy - ay) * 0.01) # reduce the trajectory velocity of the projectiles  
         return [diffX, diffY]
 
 
@@ -231,11 +233,13 @@ def draw():
         _afficher_texte("Press ENTER to start...", (215, 340))
         _afficher_texte("+ or - to adjust the difficulty ["+str(difficulty_levels[diff_factor])+"]", (140, 560))
         _afficher_texte("Made by Alexis and Alexandre", (185, 580))
+    if(paused):
+        _afficher_texte("PAUSED", (270, 260));
     pygame.display.flip()
 
 
 def update():
-    if not dead and not home:
+    if not dead and not home and not paused:
         ship.update()
 
         for p in projectiles:
@@ -261,34 +265,39 @@ def update():
 
 
 def handle_keyboard():
-    global dead, level, score, alien_per_level, first, home, running, diff_factor, press_count, choice
+    global dead, level, score, alien_per_level, first, home, running, diff_factor, press_count, paused
 
     key = pygame.key.get_pressed()
+    if(not paused):
+        if(key[pygame.K_LEFT] or key[pygame.K_a]):
+            ship.rect.x -= 5
+        elif(key[pygame.K_RIGHT] or key[pygame.K_d]):
+            ship.rect.x += 5
+        if(key[pygame.K_SPACE] or key[pygame.K_UP]):
+            ship.shoot()
+        elif(key[pygame.K_RETURN]):
+            if dead:
+                invaders.clear()
+                alien_per_level = 2
+                health = 3
+                score = 0
+                level = 0
+                dead = False
+                init()
+            elif home:
+                invaders.clear()
+                alien_per_level = 2
+                level = 0
+                score = 0
+                health = 3
+                init()
+                home = False
+                dead = False
+    if(key[pygame.K_ESCAPE]):
+        press_count += 1
+        if(press_count % 5 == 0):
+            paused = not paused
 
-    if(key[pygame.K_LEFT] or key[pygame.K_a]):
-        ship.rect.x -= 5
-    elif(key[pygame.K_RIGHT] or key[pygame.K_d]):
-        ship.rect.x += 5
-    if(key[pygame.K_SPACE] or key[pygame.K_UP]):
-        ship.shoot()
-    elif(key[pygame.K_RETURN]):
-        if dead:
-            invaders.clear()
-            alien_per_level = 2
-            health = 3
-            score = 0
-            level = 0
-            dead = False
-            init()
-        elif home:
-            invaders.clear()
-            alien_per_level = 2
-            level = 0
-            score = 0
-            health = 3
-            init()
-            home = False
-            dead = False
     if(dead):
         if(key[pygame.K_q]):
                 running = False
