@@ -4,6 +4,8 @@ A "remastered" version of SpaceInvaders made in python.
 
 How-to
 ======
+Run the executable in the build folder ( CAREFUL, might not be updated to the latest version, use the way below preferably )
+OR
 Run ' cd src && python src/main.py ' in cmd
 
 Credits
